@@ -1459,7 +1459,7 @@ public class Parser
             reportError("msg.bad.throw.eol");
         }
         AstNode expr = expr();
-        ThrowStatement pn = new ThrowStatement(pos, getNodeEnd(expr), expr);
+        ThrowStatement pn = new ThrowStatement(pos, pos - getNodeEnd(expr), expr);
         pn.setLineno(lineno);
         return pn;
     }
