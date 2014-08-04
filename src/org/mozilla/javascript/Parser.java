@@ -1150,7 +1150,7 @@ public class Parser
 
                 SwitchCase caseNode = new SwitchCase(casePos);
                 caseNode.setExpression(caseExpression);
-                caseNode.setLength(ts.tokenEnd - pos);  // include colon
+                caseNode.setLength(ts.tokenEnd - casePos);  // include colon
                 caseNode.setLineno(caseLineno);
 
                 while ((tt = peekToken()) != Token.RC
