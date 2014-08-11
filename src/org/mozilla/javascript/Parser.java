@@ -1201,13 +1201,13 @@ public class Parser
         enterLoop(pn);
         try {
             AstNode body = statement();
+            pn.setBody(body);
             mustMatchToken(Token.WHILE, "msg.no.while.do");
             pn.setWhilePosition(ts.tokenBeg - pos);
             ConditionData data = condition();
+            end = getNodeEnd(data.condition);
             pn.setCondition(data.condition);
             pn.setParens(data.lp - pos, data.rp - pos);
-            end = getNodeEnd(body);
-            pn.setBody(body);
         } finally {
             exitLoop();
         }
@@ -1459,7 +1459,7 @@ public class Parser
             reportError("msg.bad.throw.eol");
         }
         AstNode expr = expr();
-        ThrowStatement pn = new ThrowStatement(pos, pos - getNodeEnd(expr), expr);
+        ThrowStatement pn = new ThrowStatement(pos, getNodeEnd(expr) - pos, expr);
         pn.setLineno(lineno);
         return pn;
     }
