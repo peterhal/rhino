@@ -1403,6 +1403,9 @@ public class Parser
 
                 Block catchBlock = (Block)statements();
                 tryEnd = getNodeEnd(catchBlock);
+                if (mustMatchToken(Token.RC, "msg.no.brace.after.body"))
+                  tryEnd = ts.tokenEnd;
+                catchBlock.setLength(tryEnd - catchBlock.getPosition());
                 CatchClause catchNode = new CatchClause(catchPos);
                 catchNode.setVarName(varName);
                 catchNode.setCatchCondition(catchCond);
@@ -1413,8 +1416,6 @@ public class Parser
                 catchNode.setParens(lp, rp);
                 catchNode.setLineno(catchLineNum);
 
-                if (mustMatchToken(Token.RC, "msg.no.brace.after.body"))
-                    tryEnd = ts.tokenEnd;
                 catchNode.setLength(tryEnd - catchPos);
                 if (clauses == null)
                     clauses = new ArrayList<CatchClause>();
@@ -2852,15 +2853,14 @@ public class Parser
             if (peekToken() == Token.FOR) {
                 return generatorExpression(e, begin);
             }
-            ParenthesizedExpression pn = new ParenthesizedExpression(e);
+            mustMatchToken(Token.RP, "msg.no.paren");
+            ParenthesizedExpression pn = new ParenthesizedExpression(begin, ts.tokenEnd - begin, e);
             if (jsdocNode == null) {
-                jsdocNode = getAndResetJsDoc();
+              jsdocNode = getAndResetJsDoc();
             }
             if (jsdocNode != null) {
-                pn.setJsDocNode(jsdocNode);
+              pn.setJsDocNode(jsdocNode);
             }
-            mustMatchToken(Token.RP, "msg.no.paren");
-            pn.setLength(ts.tokenEnd - pn.getPosition());
             pn.setLineno(lineno);
             return pn;
         } finally {
