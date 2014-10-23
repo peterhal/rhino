@@ -2797,9 +2797,11 @@ public class Parser
               if (this.inUseStrictDirective && ts.isNumberOctal()) {
                   reportError("msg.no.octal.strict");
               }
-              return new NumberLiteral(ts.tokenBeg,
-                                       s,
-                                       ts.getNumber());
+            final NumberLiteral numberLiteral = new NumberLiteral(ts.tokenBeg,
+                    s,
+                    ts.getNumber());
+            numberLiteral.setLength(ts.getTokenLength());
+            return numberLiteral;
           }
 
           case Token.STRING:
