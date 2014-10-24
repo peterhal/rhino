@@ -1205,7 +1205,7 @@ public class Parser
             mustMatchToken(Token.WHILE, "msg.no.while.do");
             pn.setWhilePosition(ts.tokenBeg - pos);
             ConditionData data = condition();
-            end = getNodeEnd(data.condition);
+            end = ts.tokenEnd;
             pn.setCondition(data.condition);
             pn.setParens(data.lp - pos, data.rp - pos);
         } finally {
