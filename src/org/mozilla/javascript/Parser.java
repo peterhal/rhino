@@ -580,6 +580,7 @@ public class Parser
                 root.addComment(c);
             }
         }
+        end = ts.getSourceString().length();
 
         root.setLength(end - pos);
         root.setSourceName(sourceURI);
